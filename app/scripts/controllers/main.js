@@ -31,10 +31,26 @@ angular.module('flashvitaApp')
 //        $rootScope.local = window.location;
 //        console.log(window.location);
         
-        $http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+//        $http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
         // Send this header only in post requests. Specifies you are sending a JSON object
-        $http.defaults.headers.post['dataType'] = 'json';
+//        $http.defaults.headers.post['dataType'] = 'json';
         
+        return;
+        $http.get('https://api.instagram.com/oauth/access_token', 
+        {headers: { 
+                client_id:'16c9557d66fe46a2ba0c42a94d62a89a',
+                client_secret: '811fefc5d24e49189e243bbb9c444baa',
+                grant_type:'authorization_code',
+                redirect_uri:'http://localhost:9000',
+                code:$routeParams.code}})
+        .then(function(success) {
+                
+                console.log(success);
+        }, function(error) {
+                
+                console.log(error);
+        });
+        return;
         $http({
             url:'https://api.instagram.com/oauth/access_token',
             method:'GET',
@@ -64,6 +80,9 @@ angular.module('flashvitaApp')
     
     
     $scope.authenticate = function(provider) {
+        
+        $http.get('https://api.instagram.com/v1/users/self/?access_token=204911331.16c9557.409966077e6d49d3860d8f674aaea359').then(function(s){console.log('success', s);}, function(e){console.log('error', e)})
+        return;
         
         window.location = 'https://api.instagram.com/oauth/authorize/?client_id=16c9557d66fe46a2ba0c42a94d62a89a&redirect_uri=http://localhost:9000&response_type=code'
 //        $http.get('https://api.instagram.com/oauth/authorize/?client_id=16c9557d66fe46a2ba0c42a94d62a89a&redirect_uri=http://localhost:9000&response_type=code', {
