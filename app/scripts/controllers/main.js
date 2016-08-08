@@ -8,66 +8,58 @@
  * Controller of the flashvitaApp
  */
 angular.module('flashvitaApp')
-  .controller('MainCtrl', function ($scope, $auth, $http, $routeParams, $rootScope, $location) {
+  .controller('MainCtrl', function ($scope, $auth, $http, $routeParams, $rootScope, $location, $window) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
-    // Sends this header with any AJAX request
     
+    var cId = '16c9557d66fe46a2ba0c42a94d62a89a',
+        cSec = '811fefc5d24e49189e243bbb9c444baa',
+        redirect_uri = 'http://localhost:9000', 
+        url_api = 'http://localhost/~squaq/api.php';
+//    $window.localStorage.setItem(key,value);
+//    $window.localStorage.removeItem('fvcode');
+//    $window.localStorage.removeItem('fvtoken');
     
-    console.log($routeParams);
-    console.log($rootScope.local);
+//    console.log($routeParams);
+    console.log($window.localStorage.getItem('fvcode'));
+    console.log($window.localStorage.getItem('fvtoken'));
 //    console.log($location.hash);
+    $scope.sigBt = $window.localStorage.getItem('fvtoken');
+    $scope.hashsearch= '';
     
-//    if($routeParams.)
+    
     if($routeParams.code){
-        $rootScope.code = $routeParams.code;
+        $window.localStorage.setItem('fvcode', $routeParams.code);
+        window.location = "/";
+    }
+    
+    if($window.localStorage.getItem('fvcode') && !$window.localStorage.getItem('fvtoken')){
         
-//        window.location = 'https://api.instagram.com/oauth/authorize/?client_id=16c9557d66fe46a2ba0c42a94d62a89a&redirect_uri=http://localhost:9000&response_type=token';
-//        $http.get('https://api.instagram.com/oauth/authorize/?client_id=16c9557d66fe46a2ba0c42a94d62a89a&redirect_uri=http://localhost:9000&response_type=token')
-//            .then(function(success){console.log('success',success);}, function(error){console.log('error',error)});
-//        $rootScope.local = window.location;
-//        console.log(window.location);
-        
-//        $http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-        // Send this header only in post requests. Specifies you are sending a JSON object
-//        $http.defaults.headers.post['dataType'] = 'json';
-        
-        return;
-        $http.get('https://api.instagram.com/oauth/access_token', 
-        {headers: { 
-                client_id:'16c9557d66fe46a2ba0c42a94d62a89a',
-                client_secret: '811fefc5d24e49189e243bbb9c444baa',
-                grant_type:'authorization_code',
-                redirect_uri:'http://localhost:9000',
-                code:$routeParams.code}})
-        .then(function(success) {
-                
-                console.log(success);
-        }, function(error) {
-                
-                console.log(error);
-        });
-        return;
-        $http({
-            url:'https://api.instagram.com/oauth/access_token',
-            method:'GET',
-            
-            data:{
-                client_id:'16c9557d66fe46a2ba0c42a94d62a89a',
-                client_secret: '811fefc5d24e49189e243bbb9c444baa',
-                grant_type:'authorization_code',
-                redirect_uri:'http://localhost:9000',
-                code:$routeParams.code
-            
+        $http.get(url_api+'?func=token&id='+cId+'&sec='+cSec+'&uri='+redirect_uri+'&code='+$window.localStorage.getItem('fvcode')).then(function(success){
+            console.log(success);
+            if(success.status === 200 && success.data.access_token){
+               $window.localStorage.setItem('fvtoken', success.data.access_token);
+                window.location = "/";
             }
-        }).then(function(success){console.log('success',success);}, function(error){console.log('error',error)});
+            else{ 
+                console.log('success error', success.data);
+//                $scope.reset(); 
+            }
+            
+        }, function(error){
+            console.log('error', error)
+//            $scope.reset();
+        });
         
-//        $http.get('https://api.instagram.com/v1/tags/fillen/media/recent?access_token='+$routeParams.code).then(function(success){console.log('success',success);}, function(error){console.log('error',error)});
-        
-//        $routeParams.code
+    }
+    
+    $scope.reset = function (){
+        $window.localStorage.removeItem('fvcode');
+        $window.localStorage.removeItem('fvtoken');
+        window.location = '/';
     }
 //    $scope.isAuthenticated = function() {
 //      // check if logged in
@@ -77,30 +69,12 @@ angular.module('flashvitaApp')
 //      // connect email account with instagram
 //    };
 
-    
+    $scope.pesquisar = function(){
+        $http.get(url_api+'?func=tags&tag='+$scope.pesquisar+'&token='+$window.localStorage.getItem('fvtoken'))
+            .then(function(s){console.log('success', s)}, function(e){console.log('error', e)});
+    }
     
     $scope.authenticate = function(provider) {
-        
-        $http.get('https://api.instagram.com/v1/users/self/?access_token=204911331.16c9557.409966077e6d49d3860d8f674aaea359').then(function(s){console.log('success', s);}, function(e){console.log('error', e)})
-        return;
-        
-        window.location = 'https://api.instagram.com/oauth/authorize/?client_id=16c9557d66fe46a2ba0c42a94d62a89a&redirect_uri=http://localhost:9000&response_type=code'
-//        $http.get('https://api.instagram.com/oauth/authorize/?client_id=16c9557d66fe46a2ba0c42a94d62a89a&redirect_uri=http://localhost:9000&response_type=code', {
-//            name: 'instagram',
-//            url: 'http://localhost:3000/auth/instagram',
-//            redirectUri: 'http://localhost:9000',
-//            clientId: '16c9557d66fe46a2ba0c42a94d62a89a',
-//            requiredUrlParams: ['scope'],
-//            scope: ['likes'],
-//            scopeDelimiter: '+',
-//            authorizationEndpoint: 'https://api.instagram.com/oauth/authorize'
-//        })
-//        .then(function(success){console.log('success',success);}, function(error){console.log('error',error)});
-        
-//        console.log(provider);
-        
-//        cc8c5f8757d24f4c80c3e7280c1542aa
-        
-//        $auth.authenticate(provider);
+        window.location = 'https://api.instagram.com/oauth/authorize/?client_id='+cId+'&redirect_uri='+redirect_uri+'&response_type=code';
     };
   });

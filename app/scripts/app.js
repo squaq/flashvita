@@ -19,11 +19,16 @@ angular
     'satellizer'
   ])
   .config(function ($routeProvider, $locationProvider, $httpProvider) {
-
     
+//    $rootScope.fvcode = $window.localStorage.getItem('fvcode')? $window.localStorage.getItem('fvcode') : null;
+//
+//    $rootScope.fvtoken = $window.localStorage.getItem('fvtoken')? $window.localStorage.getItem('fvtoken') : null;
+   
+
+        
 
       // This is `false` by default
-      $locationProvider.html5Mode(true);
+    $locationProvider.html5Mode(true);
     
     $routeProvider
       .when('/', {

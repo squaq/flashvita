@@ -5,10 +5,13 @@
     Always a pleasure scaffolding your apps.
   </p>
 <!--  <p><a class="btn btn-lg btn-success" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>-->
-    <button ng-click="authenticate('instagram')">Sign in with Instagram</button>
+    <button ng-show="!sigBt" ng-click="authenticate('instagram')">Sign in with Instagram</button>
+    <input  ng-show="sigBt" type="text" ng-model="hashsearch" placeholder="#hashtag">
+    <button ng-show="sigBt"  ng-click="pesquisar()">pesquisar</button>
 </div>
 
 <div class="row marketing">
+ <button ng-show="sigBt" ng-click="reset()">logout</button>
   <h4>HTML5 Boilerplate</h4>
   <p>
     HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
