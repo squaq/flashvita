@@ -28,7 +28,8 @@
 
     function tags(){
 //        $tag_url = 'https://api.instagram.com/v1/tags/' . $_GET['tag'] . '/media/recent?access_token='. $_GET['token'];
-        $tag_url = 'https://api.instagram.com/v1/tags/search?q=' . $_GET['tag'] . '&?access_token='. $_GET['token'];
+//        $tag_url = 'https://api.instagram.com/v1/tags/search?q=' . $_GET['tag'] . '&?access_token='. $_GET['token'];
+        $tag_url = 'https://api.instagram.com/v1/users/self/media/recent/?access_token=' . $_GET['token'];
         service($tag_url);
     }
 //
