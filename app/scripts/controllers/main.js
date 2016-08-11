@@ -18,7 +18,7 @@ angular.module('flashvitaApp')
     var cId = '16c9557d66fe46a2ba0c42a94d62a89a',
         cSec = '811fefc5d24e49189e243bbb9c444baa',
         redirect_uri = 'http://localhost:9000', 
-        url_api = 'http://localhost/api.php';//'http://localhost/~squaq/api.php';
+        url_api = 'http://localhost/~squaq/api.php';//'http://localhost/api.php';//
 //    $window.localStorage.setItem(key,value);
 //    $window.localStorage.removeItem('fvcode');
 //    $window.localStorage.removeItem('fvtoken');
