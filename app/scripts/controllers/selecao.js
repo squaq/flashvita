@@ -8,12 +8,15 @@
  * Controller of the flashvitaApp
  */
 angular.module('flashvitaApp')
-  .controller('AboutCtrl', function ($scope, $rootScope) {
+  .controller('SelecaoCtrl', function ($scope, $rootScope, $routeParams, $http) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
+    var id = $routeParams.param;
+//    console.log('meu id',id);
+    
     var canvas = document.getElementById('canvas');
     
     var context = canvas.getContext('2d');
@@ -21,22 +24,52 @@ angular.module('flashvitaApp')
     canvas.width = 750;
     canvas.height = 1117;
     
-    console.log(canvas);
-    console.log(context);
-    $scope.upImg = "";
+//    console.log(canvas);
+//    console.log(context);
+    $scope.upImg = '';
+    
+    $http.get('https://integration.squidit.com.br/v1/monitoring/'+id+'/medias', {headers : {'Authorization': $rootScope.tk}})
+    .then(function(s){
+        console.log('success',s);
+//        $scope.imgs = nu
+        
+        var a = [];
+        for(var i in s.data.data ){
+            var std = s.data.data[i].images.standard_resolution.url;
+            var tmb = s.data.data[i].images.thumbnail.url;
+            var name = s.data.data[i].caption.from.username;
+            
+            var d = new Date(s.data.data[i].createdAt);
+            d = d.valueOf();
+            
+            std =std.slice(0, std.indexOf('?'));
+            tmb =tmb.slice(0, tmb.indexOf('?'));
+            
+            var img = { 'img':std, 'thumb':tmb, 'name':name, 'date':d };
+            a.push(img);
+        }
+        console.log(a);
+        $scope.imgs = a;
+        
+    }, function(e){
+        console.log('error',e);
+    });
     
     
-    if($rootScope.images) $scope.imgs = $rootScope.images;
-    console.log($rootScope.images);
+    
+    
+    if($rootScope.images){ $scope.imgs = $rootScope.images; }
+//    console.log($rootScope.images);
     
     $scope.clickBt = function(url){
         console.log(url);
         var img = new Image();
         img.src = url;
-        console.log(img)
+        console.log(img);
         img.onload = function() {
-            context.drawImage(img, 0, 0, 600, 600);
-        }
+            context.drawImage(img, 25, 123, 700, 700);
+//            context.drawImage(img, 25, 123, 640, 640);
+        };
         
 //        $location.path('/about');
     }
