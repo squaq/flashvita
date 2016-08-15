@@ -40,16 +40,27 @@ angular.module('flashvitaApp')
     $scope.gotocam = function(id){
         
         var modalInstance = $uibModal.open({
-          animation: true,
-          templateUrl: 'views/moldesel.html',
-          controller: 'ModalInstanceCtrl',
-          size: 'lg'
+            animation: true,
+            templateUrl: 'views/moldeselect.html',
+            controller: 'ModelSelectCtrl',
+            size: 'lg',
+            resolve: {
+                moldes: function () {
+                  return $rootScope.moldes;
+                }
+            }
         });
         
         modalInstance.result.then(function (selectedItem) {
-          console.log('selectedItem', selectedItem);
+            console.log('selectedItem', selectedItem);
+            if(selectedItem.fileVert) { $rootScope.moldes.fileVert =  selectedItem.fileVert; }
+            if(selectedItem.fileHori) { $rootScope.moldes.fileHori =  selectedItem.fileHori; }
+//            $rootScope.moldes = selectedItem;
+            if(!selectedItem.fileVert && !selectedItem.fileHori){ return; }
+            
+            $location.path('/selecao/'+id);
         }, function () {
-//          $log.info('Modal dismissed at: ' + new Date());
+          console.log('Modal dismissed at: ' + new Date());
         });
         
 //        $location.path('/selecao/'+id);
@@ -111,103 +122,52 @@ angular.module('flashvitaApp')
 //        
 //    }
     
-    $scope.reset = function (){
-        $window.localStorage.removeItem('fvcode');
-        $window.localStorage.removeItem('fvtoken');
-        window.location = '/';
-    }
-
-    $scope.pesquisar = function(){
-        $http.get(url_api+'?func=tags&tag='+$scope.pesquisar+'&token='+$window.localStorage.getItem('fvtoken'))
-        .then(function(s){
-            var a = [];
-            for(var i in s.data ){
-                var std = s.data[i].images.standard_resolution.url;
-                var tmb = s.data[i].images.thumbnail.url;
-
-                std =std.slice(0, std.indexOf('?'));
-                tmb =tmb.slice(0, tmb.indexOf('?'));
-                
-                
-                
-                var img = { 'img':std,
-                            'thumb':tmb
-                          };
-                a.push(img);
+//    $scope.reset = function (){
+//        $window.localStorage.removeItem('fvcode');
+//        $window.localStorage.removeItem('fvtoken');
+//        window.location = '/';
+//    }
+//
+//    $scope.pesquisar = function(){
+//        $http.get(url_api+'?func=tags&tag='+$scope.pesquisar+'&token='+$window.localStorage.getItem('fvtoken'))
+//        .then(function(s){
+//            var a = [];
+//            for(var i in s.data ){
+//                var std = s.data[i].images.standard_resolution.url;
+//                var tmb = s.data[i].images.thumbnail.url;
+//
+//                std =std.slice(0, std.indexOf('?'));
+//                tmb =tmb.slice(0, tmb.indexOf('?'));
 //                
-            }
-            
-            $rootScope.images = a;
-            $location.path('/about');
-//            console.log('success', a)
-        }, function(e){console.log('error', e)});
-    }
-    
-    $scope.authenticate = function(provider) {
-        console.log("aqui!!");
-        var config = {headers : {
-            'Authorization': masterToken
-        }};
-        $http.get('https://integration.squidit.com.br/v1/monitoring', config)
-        .then(
-            function(s){
-                console.log('success',s)
-            }, 
-            function(e){
-                console.log('error', e);
-            }
-        );
-//        window.location = 'https://api.instagram.com/oauth/authorize/?client_id='+cId+'&redirect_uri='+redirect_uri+'&response_type=code';
-    };
+//                
+//                
+//                var img = { 'img':std,
+//                            'thumb':tmb
+//                          };
+//                a.push(img);
+////                
+//            }
+//            
+//            $rootScope.images = a;
+//            $location.path('/about');
+////            console.log('success', a)
+//        }, function(e){console.log('error', e)});
+//    }
+//    
+//    $scope.authenticate = function(provider) {
+//        console.log("aqui!!");
+//        var config = {headers : {
+//            'Authorization': masterToken
+//        }};
+//        $http.get('https://integration.squidit.com.br/v1/monitoring', config)
+//        .then(
+//            function(s){
+//                console.log('success',s)
+//            }, 
+//            function(e){
+//                console.log('error', e);
+//            }
+//        );
+////        window.location = 'https://api.instagram.com/oauth/authorize/?client_id='+cId+'&redirect_uri='+redirect_uri+'&response_type=code';
+//    };
   });
-
-
-angular.module('flashvitaApp').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance) {
-    
-    
-//    $scope.items = items;
-    $scope.selected = [];
-    
-    $scope.ok = function () {
-        $uibModalInstance.dismiss('cancel');
-    };
-
-    $scope.cancel = function () {
-        $uibModalInstance.close();
-    };
-    
-    $scope.btClickHo = function(){
-        angular.element('#ho').trigger('click');
-    }
-    $scope.btClickVe = function(){
-        angular.element('#ve').trigger('click');
-    
-    }
-    
-    $scope.fileNameChanged = function (file){
-//        console.log(file);
-        if(file.files && file.files[0])
-        {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-//                console.log(e.target.result);
-                var img = new Image();
-                img.src = e.target.result;
-                console.log(file.files)
-                if(file.id == 've'){ 
-                    $scope.mVe = file.files[0].name;
-                    $scope.selected.push({'fileVert':e.target.result});
-                }
-                else { 
-                    $scope.mHo = file.files[0].name;
-                    $scope.selected.push({'fileHori':e.target.result});
-                }
-                $scope.$apply();
-            };
-            reader.readAsDataURL(file.files[0]);
-
-        }
-        
-        
-    }
-});

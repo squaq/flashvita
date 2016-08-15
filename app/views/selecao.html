@@ -7,8 +7,12 @@
 -->
 
 <div ng-hide="!imgs">
-    <div ng-repeat="i in imgs" id="imgCont">
-        <div class="button" ng-click="clickBt(i.img)"><img id="imgTmb" src="{{i.thumb}}" alt="Falhou!"></div>
+    <label><span class="glyphicon glyphicon-search"></span> <input ng-model="searchText"></label>
+    <div ng-repeat="i in imgs | orderBy:date:true | filter:searchText" id="imgCont">
+        <div class="button" ng-click="clickBt(i.img)">
+            <img id="imgTmb" src="{{i.thumb}}" alt="Falhou!">
+            <span>{{i.name}}</span>
+        </div>
     </div>
     
 <!--    <input type="file" onchange="angular.element(this).scope().fileNameChanged(this)"/>-->
