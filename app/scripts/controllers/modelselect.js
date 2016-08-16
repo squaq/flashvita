@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('flashvitaApp').controller('ModelSelectCtrl', function ($scope, $uibModalInstance, moldes) {
 
     if(moldes.fileVert != null) { $scope.mVe = moldes.fileVert.name; }

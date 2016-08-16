@@ -8,17 +8,20 @@
 
 <div ng-hide="!imgs">
     <label><span class="glyphicon glyphicon-search"></span> <input ng-model="searchText"></label>
-    <div ng-repeat="i in imgs | orderBy:date:true | filter:searchText" id="imgCont">
-        <div class="button" ng-click="clickBt(i.img)">
-            <img id="imgTmb" src="{{i.thumb}}" alt="Falhou!">
-            <span>{{i.name}}</span>
+    <div class="container">
+        <div ng-repeat="i in imgs | orderBy:date:true | filter:searchText" id="imgCont">
+
+            <img id="imgTmb" src="{{i.thumb}}" alt="Falhou!" ng-click="clickBt(i.img)">
+            <p>@{{i.name}}</p>
         </div>
     </div>
     
 <!--    <input type="file" onchange="angular.element(this).scope().fileNameChanged(this)"/>-->
-    <button ng-click="print()">Print</button>
+<!--    <button ng-click="print()">Print</button>-->
+<!--
     <canvas id="canvas">
 
     </canvas>    
+-->
 </div>
 

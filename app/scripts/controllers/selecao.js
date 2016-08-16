@@ -17,12 +17,12 @@ angular.module('flashvitaApp')
     var id = $routeParams.param;
 //    console.log('meu id',id);
     
-    var canvas = document.getElementById('canvas');
-    
-    var context = canvas.getContext('2d');
-    
-    canvas.width = 750;
-    canvas.height = 1117;
+//    var canvas = document.getElementById('canvas');
+//    
+//    var context = canvas.getContext('2d');
+//    
+//    canvas.width = 750;
+//    canvas.height = 1117;
     
 //    console.log(canvas);
 //    console.log(context);
@@ -30,7 +30,7 @@ angular.module('flashvitaApp')
     
     $http.get('https://integration.squidit.com.br/v1/monitoring/'+id+'/medias', {headers : {'Authorization': $rootScope.tk}})
     .then(function(s){
-        console.log('success',s);
+//        console.log('success',s);
 //        $scope.imgs = nu
         
         var a = [];
@@ -48,7 +48,7 @@ angular.module('flashvitaApp')
             var img = { 'img':std, 'thumb':tmb, 'name':name, 'date':d };
             a.push(img);
         }
-        console.log(a);
+//        console.log(a);
         $scope.imgs = a;
         
     }, function(e){
@@ -65,9 +65,9 @@ angular.module('flashvitaApp')
         console.log(url);
         var img = new Image();
         img.src = url;
-        console.log(img);
+//        console.log(img);
         img.onload = function() {
-            context.drawImage(img, 25, 123, 700, 700);
+//            context.drawImage(img, 25, 123, 700, 700);
 //            context.drawImage(img, 25, 123, 640, 640);
         };
         
@@ -79,10 +79,10 @@ angular.module('flashvitaApp')
         {
             var reader = new FileReader();
             reader.onload = function (e) {
-                console.log(e.target.result);
+//                console.log(e.target.result);
                 var img = new Image();
                 img.src = e.target.result;
-                context.drawImage(img, 0, 0, 750, 1117);
+//                context.drawImage(img, 0, 0, 750, 1117);
             };
             reader.readAsDataURL(ele.files[0]);
 
@@ -91,7 +91,7 @@ angular.module('flashvitaApp')
     
     
     $scope.print = function (){
-        console.log(canvas.toDataURL())
+//        console.log(canvas.toDataURL())
 //        var dataUrl = document.getElementById('canvas').toDataURL()
 //        var win=window.open();
 //        win.document.write("<br><img src='"+dataUrl+"'/>");
