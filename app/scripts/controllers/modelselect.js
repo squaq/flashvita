@@ -33,14 +33,15 @@ angular.module('flashvitaApp').controller('ModelSelectCtrl', function ($scope, $
 //                console.log(e.target.result);
                 var img = new Image();
                 img.src = e.target.result;
-                console.log(file.files)
+                
+                console.log('in cache',img)
                 if(file.id == 've'){ 
                     $scope.mVe = file.files[0].name;
-                    $scope.selected.fileVert =  {'name':file.files[0].name, 'file':e.target.result};
+                    $scope.selected.fileVert =  {'name':file.files[0].name, 'file':img};
                 }
                 else { 
                     $scope.mHo = file.files[0].name;
-                    $scope.selected.fileHori = {'name':file.files[0].name, 'file':e.target.result};
+                    $scope.selected.fileHori = {'name':file.files[0].name, 'file':img};
                 }
                 $scope.$apply();
             };
