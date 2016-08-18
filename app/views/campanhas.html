@@ -2,12 +2,23 @@
 
 
 <div ng-hide="!hashes">
-   <label><span class="glyphicon glyphicon-search"></span> <input ng-model="searchText"></label>
-    <div class="list-group">
-        <button type="button" ng-click="gotocam(h.id)" class="list-group-item" ng-repeat="h in hashes | orderBy:created_at:true | filter:searchText">
-            <span class="badge">{{h.created_at | date:'dd/MM/yyyy'}}</span>
-            #<label>{{h.tag}}</label>
-        </button>
+<div class="panel panel-default">
+    <div class="panel-heading">
+       <h4>#HashTags</h4>
+        <label class="pull-right align-top">
+            <span class="glyphicon glyphicon-search"></span> <input ng-model="searchText">
+        </label>
     </div>
+    <div class="panel-body">
+        <div class="list-group">
+            <button type="button" ng-click="gotocam(h.id)" class="list-group-item" ng-repeat="h in hashes | orderBy:created_at:true | filter:searchText">
+                <span class="badge">{{h.created_at | date:'dd/MM/yyyy'}}</span>
+                #<label>{{h.tag}}</label>
+            </button>
+        </div>
+    </div>
+</div>
+    
+
     
 </div>

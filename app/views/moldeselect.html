@@ -5,12 +5,12 @@
 
 
 <div class="modal-body">
-    <button ng-click="btClickVe()">Selecionar moldura vertical</button>
+    <button class="btn btn-default" type="button" ng-click="btClickVe()">Selecionar moldura vertical</button>
     <span>: {{mVe}}</span>
     <input type="file" id="ve" onchange="angular.element(this).scope().fileNameChanged(this)"/>
     <br/>
     <br/>
-    <button ng-click="btClickHo()">Selecionar moldura Horizontal</button>
+    <button class="btn btn-default" type="button" ng-click="btClickHo()">Selecionar moldura Horizontal</button>
     <span>: {{mHo}}</span>
     <input type="file" id="ho" onchange="angular.element(this).scope().fileNameChanged(this)"/>
 

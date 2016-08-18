@@ -15,10 +15,10 @@ angular.module('flashvitaApp')
       'Karma'
     ];
     
-    var cId = '16c9557d66fe46a2ba0c42a94d62a89a',
-        cSec = '811fefc5d24e49189e243bbb9c444baa',
-        redirect_uri = 'http://localhost:9000', 
-        url_api = 'http://localhost/~squaq/api.php';
+//    var cId = '16c9557d66fe46a2ba0c42a94d62a89a',
+//        cSec = '811fefc5d24e49189e243bbb9c444baa',
+//        redirectUri = 'http://localhost:9000', 
+//        urlApi = 'http://localhost/~squaq/api.php';
     $scope.images = null;
     
     $http.get('https://integration.squidit.com.br/v1/monitoring', {headers : {'Authorization': $rootScope.tk}})
@@ -55,16 +55,13 @@ angular.module('flashvitaApp')
             console.log('selectedItem', selectedItem);
             if(selectedItem.fileVert) { $rootScope.moldes.fileVert =  selectedItem.fileVert; }
             if(selectedItem.fileHori) { $rootScope.moldes.fileHori =  selectedItem.fileHori; }
-//            $rootScope.moldes = selectedItem;
-            if(!selectedItem.fileVert && !selectedItem.fileHori){ return; }
+            if((!selectedItem.fileVert && !selectedItem.fileHori) && !$rootScope.moldes.fileVert && !$rootScope.moldes.fileHori){ return; }
             
             $location.path('/selecao/'+id);
         }, function () {
           console.log('Modal dismissed at: ' + new Date());
         });
-        
-//        $location.path('/selecao/'+id);
-    }
+    };
     
     
 //    var modalInstance = $uibModal.open({
@@ -104,7 +101,7 @@ angular.module('flashvitaApp')
     
 //    if($window.localStorage.getItem('fvcode') && !$window.localStorage.getItem('fvtoken')){
 //        
-//        $http.get(url_api+'?func=token&id='+cId+'&sec='+cSec+'&uri='+redirect_uri+'&code='+$window.localStorage.getItem('fvcode')).then(function(success){
+//        $http.get(urlApi+'?func=token&id='+cId+'&sec='+cSec+'&uri='+redirectUri+'&code='+$window.localStorage.getItem('fvcode')).then(function(success){
 //            console.log(success);
 //            if(success.status === 200 && success.data.access_token){
 //               $window.localStorage.setItem('fvtoken', success.data.access_token);
@@ -129,7 +126,7 @@ angular.module('flashvitaApp')
 //    }
 //
 //    $scope.pesquisar = function(){
-//        $http.get(url_api+'?func=tags&tag='+$scope.pesquisar+'&token='+$window.localStorage.getItem('fvtoken'))
+//        $http.get(urlApi+'?func=tags&tag='+$scope.pesquisar+'&token='+$window.localStorage.getItem('fvtoken'))
 //        .then(function(s){
 //            var a = [];
 //            for(var i in s.data ){
@@ -168,6 +165,6 @@ angular.module('flashvitaApp')
 //                console.log('error', e);
 //            }
 //        );
-////        window.location = 'https://api.instagram.com/oauth/authorize/?client_id='+cId+'&redirect_uri='+redirect_uri+'&response_type=code';
+////        window.location = 'https://api.instagram.com/oauth/authorize/?client_id='+cId+'&redirectUri='+redirectUri+'&response_type=code';
 //    };
   });

@@ -8,140 +8,147 @@
  * Controller of the flashvitaApp
  */
 angular.module('flashvitaApp')
-  .controller('SelecaoCtrl', function ($scope, $rootScope, $routeParams, $http, $location) {
+  .controller('SelecaoCtrl', function ($scope, $rootScope, $routeParams, $http, $location, $route) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
     var id = $routeParams.param,
-        imgInsta = new Image();
+        imgInsta = new Image(),
+        imgMolde = null,
+        printW = 750,
+        printH = 1117,
+        mW = 500,
+        mH = 750,
+        invert = false;
     $scope.moldes = $rootScope.moldes;
     $scope.modelSelected = null;
+    
+    
+    
     if(!$scope.moldes.fileVert && !$scope.moldes.fileHori){ $location.path('/'); }
-//    console.log($scope.moldes)
-//    console.log('meu id',id);
-    
+    console.log(typeof canvas);
     var canvas = document.getElementById('canvas');
-//    
     var context = canvas.getContext('2d');
-//    
-    canvas.width = 750;
-    canvas.height = 1117;
-    
-//    console.log(canvas);
-//    console.log(context);
-    $scope.upImg = '';
+
     $scope.state = 'load';
-//    $scope.state = 'select_molde_side';
-    
-    $http.get('https://integration.squidit.com.br/v1/monitoring/'+id+'/medias', {headers : {'Authorization': $rootScope.tk}})
-    .then(function(s){
-//        console.log('success',s);
-//        $scope.imgs = nu
-        
-        var a = [];
-        for(var i in s.data.data ){
-            var std = s.data.data[i].images.standard_resolution.url;
-            var tmb = s.data.data[i].images.thumbnail.url;
-            var name = s.data.data[i].caption.from.username;
-            
-            var d = new Date(s.data.data[i].createdAt);
-            d = d.valueOf();
-            
-            std =std.slice(0, std.indexOf('?'));
-            tmb =tmb.slice(0, tmb.indexOf('?'));
-            
-            var img = { 'img':std, 'thumb':tmb, 'name':name, 'date':d };
-            a.push(img);
-        }
-//        console.log(a);
-        $scope.imgs = a;
-        $scope.state = 'select_photo';
-        
-    }, function(e){
-        console.log('error',e);
-    });
-    
+    function loadData(){
+        $http.get('https://integration.squidit.com.br/v1/monitoring/'+id+'/medias', {headers : {'Authorization': $rootScope.tk}})
+        .then(function(s){
+            var a = [];
+            for(var i in s.data.data ){
+                var std = s.data.data[i].images.standard_resolution.url;
+                var tmb = s.data.data[i].images.thumbnail.url;
+                var name = s.data.data[i].caption.from.username;
+
+                var d = new Date(s.data.data[i].createdAt);
+                d = d.valueOf();
+
+                std =std.slice(0, std.indexOf('?'));
+                tmb =tmb.slice(0, tmb.indexOf('?'));
+
+                var img = { 'img':std, 'thumb':tmb, 'name':name, 'date':d };
+                a.push(img);
+            }
+            $scope.imgs = a;
+            $scope.state = 'select_photo';
+
+        }, function(e){
+            console.log('error',e);
+        });
+    }
+    loadData();  
     
     if($rootScope.images){ $scope.imgs = $rootScope.images; }
-//    console.log($rootScope.images);
     
     $scope.clickBt = function(url){
-        console.log(url);
         $scope.state = 'load';
+        imgInsta.setAttribute('crossOrigin', 'anonymous');
         imgInsta.src = url;
-//        console.log(img);
         imgInsta.onload = function() {
-            console.log('loaded', this);
             $scope.state = 'select_molde_side';
             $scope.$apply();
-//            context.drawImage(img, 25, 123, 700, 700);
-//            context.drawImage(img, 25, 123, 640, 640);
         };
-        
-//        $location.path('/about');
-    }
+    };
     
     $scope.moldeSelect = function(){
-        console.log("opa aqui!!!")
-        console.log($scope.modelSelected);
-        console.log(imgInsta);
         $scope.state = 'time_to_print';
         
-        if($scope.modelSelected == 'vert') {
-            context.drawImage($scope.moldes.fileVert.file, 0, 0, 750, 1117);
-            context.drawImage(imgInsta, 25, 123, 700, 700);
+        if($scope.modelSelected === 'vert') {
+            mW = canvas.width = 500;
+            mH = canvas.height = 750;
+            printW = 750;
+            printH = 1117;            
+            $scope.moldes.fileVert.file.setAttribute('crossOrigin', 'anonymous');
+            imgMolde = $scope.moldes.fileVert.file
+            $rootScope.instaImg.x = 16;
+            $rootScope.instaImg.y = 82;
         }
         else {
-            
-            context.drawImage($scope.moldes.fileHori.file, 0, 0, 1117, 750);
-            context.drawImage(imgInsta, 101, 25, 700, 700);
-//            canvas.width = canvas.width * 0.5;
-//            canvas.height = canvas.height * 0.5;
+            mW = canvas.width = 750;
+            mH = canvas.height = 500;
+            printW = 1117;
+            printH = 750;            $scope.moldes.fileHori.file.setAttribute('crossOrigin', 'anonymous');
+            imgMolde = $scope.moldes.fileHori.file;
+            $rootScope.instaImg.x = 82;
+            $rootScope.instaImg.y = 16;
         }
-        
-        
-
-        
-//        $scope.$apply();
-         
-//        if($scope.modelSelected.files && $scope.modelSelected.files[0])
-//        {
-//            var reader = new FileReader();
-//            reader.onload = function (e) {
-//                console.log(e.target.result);
-//            }    
-//        }
-        
-    }
+        drawCanvas();
+    };
     
+    $scope.moveImg = function(dir){
+        switch(dir){
+            case 'left':
+                $rootScope.instaImg.x -= 1;
+                break;
+            case 'right':
+                $rootScope.instaImg.x += 1;
+                break;            
+            case 'up':
+                $rootScope.instaImg.y -= 1;
+                break;
+            case 'down':
+                $rootScope.instaImg.y += 1;
+                break;
+        }
+        drawCanvas();
+    };
     
-    
-    
-    $scope.fileNameChanged = function (ele) {
-        if(ele.files && ele.files[0])
-        {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-//                console.log(e.target.result);
-                var img = new Image();
-                img.src = e.target.result;
-//                context.drawImage(img, 0, 0, 750, 1117);
-            };
-            reader.readAsDataURL(ele.files[0]);
-
+    function drawCanvas(){
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        if(!invert){
+            context.drawImage(imgMolde, 0, 0, mW, mH);
+            context.drawImage(imgInsta, $rootScope.instaImg.x, $rootScope.instaImg.y, 470, 470);        
+        }
+        else{
+            context.drawImage(imgInsta, $rootScope.instaImg.x, $rootScope.instaImg.y, 470, 470);        
+            context.drawImage(imgMolde, 0, 0, mW, mH);
         }
     }
     
+    $scope.getInverte = function() {
+        invert = !invert;
+        drawCanvas();
+    };
     
-    $scope.print = function (){
-//        console.log(canvas.toDataURL())
-//        var dataUrl = document.getElementById('canvas').toDataURL()
-//        var win=window.open();
-//        win.document.write("<br><img src='"+dataUrl+"'/>");
-//        win.print();
-//        win.location.reload();
+    $scope.print = function() {
+        var win = window.open();
+        win.document.write('<body style="margin:0; padding:0;"><img src="'+canvas.toDataURL()+'" style="margin:0; padding:0; width:'+printW+'px; height:'+printH+'px;"/></body>');
+        win.print();
+        win.close();
+        $route.reload();
+    };
+    
+    $scope.selectAnotherPic = function(){
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        $scope.state = 'select_photo';
     }
+    
+    $scope.reload = function() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        $scope.state = 'load';
+        loadData();
+    };
     
   });

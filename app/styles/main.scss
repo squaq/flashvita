@@ -94,10 +94,10 @@ body {
 #ho, #ve{ display: none; }
 
 #imgCont {
-    max-width: 160px;
-    float: left;
-    display: block;
-    padding: 10px 20px;
+    width: 160px;
+//    float: left;
+//    display: block;
+    padding: 10px 31px;
     #imgTmb{
         cursor: pointer;
     }
@@ -109,6 +109,19 @@ body {
     }
 }
 
+canvas{
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+#logo {
+    width: 200px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.navbar{ margin-bottom: 0; }
+#printBt{ margin-left: 5px; }
+.align-top{ margin-top: -30px;}
 
 //animated preload gif
 .sk-cube-grid {

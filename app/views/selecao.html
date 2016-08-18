@@ -1,28 +1,31 @@
 
 <div ng-hide="state != 'load'" ng-include="'images/preloader.html'"></div>
-<!--
-<div ng-repeat="i in imgs" ng-init="imgs != null" id="imgCont">
-    <div class="button" ng-click="clickBt(i.img)"><img id="imgTmb" src="{{i.thumb}}" alt="Falhou!"></div>
-</div>
--->
 
 <div ng-hide="state != 'select_photo'">
-    <label><span class="glyphicon glyphicon-search"></span> <input ng-model="searchText"></label>
-    <div class="container">
-        <div ng-repeat="i in imgs | orderBy:date:true | filter:searchText" id="imgCont">
+    
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <label>
+                <span class="glyphicon glyphicon-search"></span> 
+                <input ng-model="searchText">
+            </label>
+            <button class="btn btn-default pull-right" type="button" ng-click="reload()">
+                <i class="glyphicon glyphicon-refresh"></i>
+            </button>
+             
+        </div>
+        <div class="panel-body">
+<!--            <div class="container-fluid">-->
+                <div class="row row-list">
+                    <div ng-repeat="i in imgs | orderBy:date:true | filter:searchText" id="imgCont" class="col-lg-5 col-md-5 col-sm-5">
 
-            <img id="imgTmb" src="{{i.thumb}}" alt="Falhou!" ng-click="clickBt(i.img)">
-            <p>@{{i.name}}</p>
+                        <img id="imgTmb" src="{{i.thumb}}" alt="Falhou!" ng-click="clickBt(i.img)">
+                        <p>@{{i.name}}</p>
+                    </div>
+                </div>
+<!--            </div>-->
         </div>
     </div>
-    
-<!--    <input type="file" onchange="angular.element(this).scope().fileNameChanged(this)"/>-->
-<!--    <button ng-click="print()">Print</button>-->
-<!--
-    <canvas id="canvas">
-
-    </canvas>    
--->
 </div>
 
 <div ng-hide="state != 'select_molde_side'">               
@@ -54,7 +57,37 @@
 </div>
 
 <div  ng-hide="state != 'time_to_print'">
-    <canvas id="canvas">
+    <canvas id="canvas"></canvas>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <button class="btn btn-default" type="button" ng-click="moveImg('left')">
+                <i class="glyphicon glyphicon-chevron-left" ></i>
+            </button>
 
-    </canvas>
+            <button class="btn btn-default" type="button" ng-click="moveImg('right')">
+                <i class="glyphicon glyphicon-chevron-right" ></i>
+            </button>
+
+            <button class="btn btn-default" type="button" ng-click="moveImg('up')">
+                <i class="glyphicon glyphicon-chevron-up" ></i>
+            </button>
+
+            <button class="btn btn-default" type="button" ng-click="moveImg('down')">
+                <i class="glyphicon glyphicon-chevron-down" ></i>
+            </button>
+
+            <button class="btn btn-default" type="button" ng-click="getInverte()">
+                <i class="glyphicon glyphicon-random"></i>
+            </button>
+
+
+            
+            <button class="btn btn-primary pull-right" type="button" ng-click="print()" id="printBt">
+                Imprimir
+            </button>
+            <button class="btn btn-info pull-right" type="button" ng-click="selectAnotherPic()">
+                Escolher outra Foto
+            </button>
+        </div>
+    </div>
 </div>
