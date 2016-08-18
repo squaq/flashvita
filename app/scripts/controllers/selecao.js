@@ -17,6 +17,9 @@ angular.module('flashvitaApp')
     var id = $routeParams.param,
         imgInsta = new Image(),
         imgMolde = null,
+        wModel = 750,
+        hModel = 1126,
+        instaQuad = 700,
         printW = 750,
         printH = 1117,
         mW = 500,
@@ -76,29 +79,40 @@ angular.module('flashvitaApp')
         $scope.state = 'time_to_print';
         
         if($scope.modelSelected === 'vert') {
-            mW = canvas.width = 500;
-            mH = canvas.height = 750;
-            printW = 750;
-            printH = 1117;            
+            mW = canvas.width = wModel;
+            mH = canvas.height = hModel;
             $scope.moldes.fileVert.file.setAttribute('crossOrigin', 'anonymous');
             imgMolde = $scope.moldes.fileVert.file
-            $rootScope.instaImg.x = 16;
-            $rootScope.instaImg.y = 82;
+            $rootScope.instaImg.x = 23;
+            $rootScope.instaImg.y = 124;
         }
         else {
-            mW = canvas.width = 750;
-            mH = canvas.height = 500;
-            printW = 1117;
-            printH = 750;            $scope.moldes.fileHori.file.setAttribute('crossOrigin', 'anonymous');
+            mW = canvas.width = hModel;//1117;
+            mH = canvas.height = wModel;//750;
+            $scope.moldes.fileHori.file.setAttribute('crossOrigin', 'anonymous');
             imgMolde = $scope.moldes.fileHori.file;
-            $rootScope.instaImg.x = 82;
-            $rootScope.instaImg.y = 16;
+            $rootScope.instaImg.x = 124;
+            $rootScope.instaImg.y = 23;
         }
         drawCanvas();
     };
     
-    $scope.moveImg = function(dir){
-        switch(dir){
+    var btState = '';
+    var interval = 0;
+    
+    $scope.mouseDown = function(dir){
+        btState = dir;
+        interval = setInterval($scope.moveImg, 50);
+        console.log('m down')
+    }
+    
+    $scope.mouseUp = function(){
+        clearInterval(interval);
+        console.log('m up')
+    }
+    
+    $scope.moveImg = function(){
+        switch(btState){
             case 'left':
                 $rootScope.instaImg.x -= 1;
                 break;
@@ -111,7 +125,14 @@ angular.module('flashvitaApp')
             case 'down':
                 $rootScope.instaImg.y += 1;
                 break;
+            case 'in':
+                instaQuad += 1;
+                break;
+            case 'out':
+                instaQuad -= 1;
+                break;
         }
+        console.log('x:'+$rootScope.instaImg.x, "y:"+$rootScope.instaImg.y, "quad:"+instaQuad);
         drawCanvas();
     };
     
@@ -119,10 +140,10 @@ angular.module('flashvitaApp')
         context.clearRect(0, 0, canvas.width, canvas.height);
         if(!invert){
             context.drawImage(imgMolde, 0, 0, mW, mH);
-            context.drawImage(imgInsta, $rootScope.instaImg.x, $rootScope.instaImg.y, 470, 470);        
+            context.drawImage(imgInsta, $rootScope.instaImg.x, $rootScope.instaImg.y, instaQuad, instaQuad);        
         }
         else{
-            context.drawImage(imgInsta, $rootScope.instaImg.x, $rootScope.instaImg.y, 470, 470);        
+            context.drawImage(imgInsta, $rootScope.instaImg.x, $rootScope.instaImg.y, instaQuad, instaQuad);        
             context.drawImage(imgMolde, 0, 0, mW, mH);
         }
     }
@@ -132,9 +153,18 @@ angular.module('flashvitaApp')
         drawCanvas();
     };
     
+    $scope.saveImg = function(){
+        var dt = canvas.toDataURL('image/jpeg');
+         window.open(dt,"canvasImage","left=0,top=0,width="+mW+",height="+mH+",toolbar=0,resizable=0");
+//        window.document.write('<body style="margin:0; padding:0;"><img src="'+canvas.toDataURL()+'" style="margin:0; padding:0; width:'+mW+'px; height:'+mH+'px;"/></body>');
+        
+//        window.open(dt, "_blank");
+//        console.log('ta rolando')
+    }
+    
     $scope.print = function() {
         var win = window.open();
-        win.document.write('<body style="margin:0; padding:0;"><img src="'+canvas.toDataURL()+'" style="margin:0; padding:0; width:'+printW+'px; height:'+printH+'px;"/></body>');
+        win.document.write('<body style="margin:0; padding:0;"><img src="'+canvas.toDataURL()+'" style="margin:0; padding:0;"/></body>');
         win.print();
         win.close();
         $route.reload();
@@ -143,6 +173,7 @@ angular.module('flashvitaApp')
     $scope.selectAnotherPic = function(){
         context.clearRect(0, 0, canvas.width, canvas.height);
         $scope.state = 'select_photo';
+        instaQuad = 700;
     }
     
     $scope.reload = function() {

@@ -57,23 +57,30 @@
 </div>
 
 <div  ng-hide="state != 'time_to_print'">
-    <canvas id="canvas"></canvas>
     <div class="panel panel-default">
         <div class="panel-body">
-            <button class="btn btn-default" type="button" ng-click="moveImg('left')">
+            <button class="btn btn-default" type="button" ng-mousedown="mouseDown('left')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()">
                 <i class="glyphicon glyphicon-chevron-left" ></i>
             </button>
 
-            <button class="btn btn-default" type="button" ng-click="moveImg('right')">
+            <button class="btn btn-default" type="button" ng-mousedown="mouseDown('right')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()" >
                 <i class="glyphicon glyphicon-chevron-right" ></i>
             </button>
 
-            <button class="btn btn-default" type="button" ng-click="moveImg('up')">
+            <button class="btn btn-default" type="button" ng-mousedown="mouseDown('up')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()" >
                 <i class="glyphicon glyphicon-chevron-up" ></i>
             </button>
 
-            <button class="btn btn-default" type="button" ng-click="moveImg('down')">
+            <button class="btn btn-default" type="button" ng-mousedown="mouseDown('down')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()" >
                 <i class="glyphicon glyphicon-chevron-down" ></i>
+            </button>
+               
+            <button class="btn btn-default" type="button" ng-mousedown="mouseDown('in')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()">
+                <i class="glyphicon glyphicon-resize-full" ></i>
+            </button>
+
+            <button class="btn btn-default" type="button" ng-mousedown="mouseDown('out')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()">
+                <i class="glyphicon glyphicon-resize-small" ></i>
             </button>
 
             <button class="btn btn-default" type="button" ng-click="getInverte()">
@@ -85,9 +92,16 @@
             <button class="btn btn-primary pull-right" type="button" ng-click="print()" id="printBt">
                 Imprimir
             </button>
-            <button class="btn btn-info pull-right" type="button" ng-click="selectAnotherPic()">
+            <button class="btn btn-info pull-right" type="button" ng-click="selectAnotherPic()" id="printBt">
                 Escolher outra Foto
+            </button>
+            <button class="btn btn-info pull-right" type="button" ng-click="saveImg()">
+                Salvar
             </button>
         </div>
     </div>
+    <div id="canvasContainer">
+        <canvas id="canvas"></canvas>    
+    </div>
+    
 </div>
