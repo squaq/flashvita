@@ -20,18 +20,17 @@ angular.module('flashvitaApp')
         wModel = 750,
         hModel = 1126,
         instaQuad = 700,
-        printW = 750,
-        printH = 1117,
         mW = 500,
         mH = 750,
-        invert = false;
+        invert = false,
+        btState = '',
+        interval = 0;
+    
     $scope.moldes = $rootScope.moldes;
     $scope.modelSelected = null;
     
-    
-    
     if(!$scope.moldes.fileVert && !$scope.moldes.fileHori){ $location.path('/'); }
-    console.log(typeof canvas);
+    
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
 
@@ -82,7 +81,7 @@ angular.module('flashvitaApp')
             mW = canvas.width = wModel;
             mH = canvas.height = hModel;
             $scope.moldes.fileVert.file.setAttribute('crossOrigin', 'anonymous');
-            imgMolde = $scope.moldes.fileVert.file
+            imgMolde = $scope.moldes.fileVert.file;
             $rootScope.instaImg.x = 23;
             $rootScope.instaImg.y = 124;
         }
@@ -97,19 +96,14 @@ angular.module('flashvitaApp')
         drawCanvas();
     };
     
-    var btState = '';
-    var interval = 0;
-    
     $scope.mouseDown = function(dir){
         btState = dir;
         interval = setInterval($scope.moveImg, 50);
-        console.log('m down')
-    }
+    };
     
     $scope.mouseUp = function(){
         clearInterval(interval);
-        console.log('m up')
-    }
+    };
     
     $scope.moveImg = function(){
         switch(btState){
@@ -131,8 +125,7 @@ angular.module('flashvitaApp')
             case 'out':
                 instaQuad -= 1;
                 break;
-        }
-        console.log('x:'+$rootScope.instaImg.x, "y:"+$rootScope.instaImg.y, "quad:"+instaQuad);
+        };
         drawCanvas();
     };
     
@@ -155,12 +148,9 @@ angular.module('flashvitaApp')
     
     $scope.saveImg = function(){
         var dt = canvas.toDataURL('image/jpeg');
-         window.open(dt,"canvasImage","left=0,top=0,width="+mW+",height="+mH+",toolbar=0,resizable=0");
-//        window.document.write('<body style="margin:0; padding:0;"><img src="'+canvas.toDataURL()+'" style="margin:0; padding:0; width:'+mW+'px; height:'+mH+'px;"/></body>');
-        
+         window.open(dt,'canvasImage','left=0,top=0,width='+mW+',height='+mH+',toolbar=0,resizable=0');
 //        window.open(dt, "_blank");
-//        console.log('ta rolando')
-    }
+    };
     
     $scope.print = function() {
         var win = window.open();
@@ -174,7 +164,7 @@ angular.module('flashvitaApp')
         context.clearRect(0, 0, canvas.width, canvas.height);
         $scope.state = 'select_photo';
         instaQuad = 700;
-    }
+    };
     
     $scope.reload = function() {
         context.clearRect(0, 0, canvas.width, canvas.height);
