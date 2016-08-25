@@ -17,7 +17,7 @@
         <div class="panel-body">
 <!--            <div class="container-fluid">-->
                 <div class="row row-list">
-                    <div ng-repeat="i in imgs | orderBy:date:true | filter:searchText" id="imgCont" class="col-lg-5 col-md-5 col-sm-5">
+                    <div ng-repeat="i in imgs | orderBy:date | filter:searchText" id="imgCont" class="col-lg-5 col-md-5 col-sm-5">
 
                         <img id="imgTmb" src="{{i.thumb}}" alt="Falhou!" ng-click="clickBt(i.img)">
                         <p>@{{i.name}}</p>
