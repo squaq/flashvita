@@ -17,9 +17,9 @@ angular.module('flashvitaApp')
     var id = $routeParams.param,
         imgInsta = new Image(),
         imgMolde = null,
-        wModel = 750,
-        hModel = 1126,
-        instaQuad = 700,
+        wModel = 500,//750,
+        hModel = 750, //1126,
+        instaQuad = 468,//700
         mW = 500,
         mH = 750,
         invert = false,
@@ -82,16 +82,16 @@ angular.module('flashvitaApp')
             mH = canvas.height = hModel;
             $scope.moldes.fileVert.file.setAttribute('crossOrigin', 'anonymous');
             imgMolde = $scope.moldes.fileVert.file;
-            $rootScope.instaImg.x = 23;
-            $rootScope.instaImg.y = 124;
+            $rootScope.instaImg.x = 16;//23;
+            $rootScope.instaImg.y = 82;//124;
         }
         else {
             mW = canvas.width = hModel;//1117;
             mH = canvas.height = wModel;//750;
             $scope.moldes.fileHori.file.setAttribute('crossOrigin', 'anonymous');
             imgMolde = $scope.moldes.fileHori.file;
-            $rootScope.instaImg.x = 124;
-            $rootScope.instaImg.y = 23;
+            $rootScope.instaImg.x = 82;//124;
+            $rootScope.instaImg.y = 16;//23;
         }
         drawCanvas();
     };
@@ -126,6 +126,7 @@ angular.module('flashvitaApp')
                 instaQuad -= 1;
                 break;
         };
+        console.log($rootScope.instaImg.x, $rootScope.instaImg.y, instaQuad)
         drawCanvas();
     };
     
