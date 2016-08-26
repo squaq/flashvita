@@ -29,7 +29,7 @@ angular.module('flashvitaApp')
     $scope.moldes = $rootScope.moldes;
     $scope.modelSelected = null;
     
-    if(!$scope.moldes.fileVert && !$scope.moldes.fileHori){ $location.path('/'); }
+    if(!$scope.moldes.fileVert && !$scope.moldes.fileHori){ $location.path('/campanhas'); }
     
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
