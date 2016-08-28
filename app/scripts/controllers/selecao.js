@@ -17,9 +17,9 @@ angular.module('flashvitaApp')
     var id = $routeParams.param,
         imgInsta = new Image(),
         imgMolde = null,
-        wModel = 500,//750,
-        hModel = 750, //1126,
-        instaQuad = 468,//700
+        wModel = 750,
+        hModel = 1126,
+        instaQuad = 636,//701, 636
         mW = 500,
         mH = 750,
         invert = false,
@@ -33,10 +33,12 @@ angular.module('flashvitaApp')
     
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
+    context.imageSmoothingEnabled       = true;
+
 
     $scope.state = 'load';
     function loadData(){
-        $http.get('https://integration.squidit.com.br/v1/monitoring/'+id+'/medias', {headers : {'Authorization': $rootScope.tk}})
+        $http.get('https://integration.squidit.com.br/v1/monitoring/'+id+'/medias', {headers : {'Authorization': $rootScope.tk}, params:{'limit':400}})
         .then(function(s){
             var a = [];
             for(var i in s.data.data ){
@@ -82,16 +84,16 @@ angular.module('flashvitaApp')
             mH = canvas.height = hModel;
             $scope.moldes.fileVert.file.setAttribute('crossOrigin', 'anonymous');
             imgMolde = $scope.moldes.fileVert.file;
-            $rootScope.instaImg.x = 16;//23;
-            $rootScope.instaImg.y = 82;//124;
+            $rootScope.instaImg.x = 23;//16;//
+            $rootScope.instaImg.y = 124;//82;//
         }
         else {
             mW = canvas.width = hModel;//1117;
             mH = canvas.height = wModel;//750;
             $scope.moldes.fileHori.file.setAttribute('crossOrigin', 'anonymous');
             imgMolde = $scope.moldes.fileHori.file;
-            $rootScope.instaImg.x = 82;//124;
-            $rootScope.instaImg.y = 16;//23;
+            $rootScope.instaImg.x = 416;//124;//82;//
+            $rootScope.instaImg.y = 57;//23;//16;////416 57 
         }
         drawCanvas();
     };
