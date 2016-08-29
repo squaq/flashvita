@@ -1,5 +1,9 @@
-<div ng-hide="hashes" ng-include="'images/preloader.html'"></div>
+<div ng-hide="hashes" ng-include="'views/preloader.html'"></div>
 
+
+<div ng-hide="erro">
+    <h3>Algo de errado aconteceu! Por favor, cheque sua conexão de internet e se o erro persistir entre em contato com a <b>Squid</b>.</h3>
+</div>
 
 <div ng-hide="!hashes">
 <div class="panel panel-default">
@@ -18,7 +22,4 @@
         </div>
     </div>
 </div>
-    
-
-    
 </div>

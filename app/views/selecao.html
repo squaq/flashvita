@@ -1,5 +1,5 @@
 
-<div ng-hide="state != 'load'" ng-include="'images/preloader.html'"></div>
+<div ng-hide="state != 'load'" ng-include="'views/preloader.html'"></div>
 
 <div ng-hide="state != 'select_photo'">
     
@@ -17,9 +17,9 @@
         <div class="panel-body">
 <!--            <div class="container-fluid">-->
                 <div class="row row-list">
-                    <div ng-repeat="i in imgs | orderBy:date | filter:searchText" id="imgCont" class="col-lg-5 col-md-5 col-sm-5">
+                    <div ng-repeat="i in imgs | orderBy:date | filter:searchText" id="imgCont" class="col-lg-5 col-md-3 col-sm-1">
 
-                        <img id="imgTmb" src="{{i.thumb}}" alt="Falhou!" ng-click="clickBt(i.img)">
+                        <img id="imgTmb" ng-src="{{i.thumb}}" alt="Falhou!" ng-click="clickBt(i.img)" ld-img>
                         <p>@{{i.name}}</p>
                     </div>
                 </div>
@@ -56,52 +56,85 @@
     </div> 
 </div>
 
-<div  ng-hide="state != 'time_to_print'">
+<div ng-hide="state != 'time_to_print'">
     <div class="panel panel-default">
         <div class="panel-body">
-            <button class="btn btn-default" type="button" ng-mousedown="mouseDown('left')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()">
-                <i class="glyphicon glyphicon-chevron-left" ></i>
-            </button>
+           
+            <div id="leftBts" class="pull-left">
+                <div class="input-group">
+                    <span class="input-group-btn" role="">
+                        <button class="btn btn-default" type="button" ng-mousedown="mouseDown('left')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()">
+                            <i class="glyphicon glyphicon-chevron-left" ></i>
+                        </button>
 
-            <button class="btn btn-default" type="button" ng-mousedown="mouseDown('right')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()" >
-                <i class="glyphicon glyphicon-chevron-right" ></i>
-            </button>
+                        <button class="btn btn-default" type="button" ng-mousedown="mouseDown('right')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()" >
+                            <i class="glyphicon glyphicon-chevron-right" ></i>
+                        </button>
 
-            <button class="btn btn-default" type="button" ng-mousedown="mouseDown('up')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()" >
-                <i class="glyphicon glyphicon-chevron-up" ></i>
-            </button>
+                    </span>
+                    <input type="text" class="form-control" ng-model="instaImg.x" ng-change="change('x')">
+                </div>
 
-            <button class="btn btn-default" type="button" ng-mousedown="mouseDown('down')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()" >
-                <i class="glyphicon glyphicon-chevron-down" ></i>
-            </button>
-               
-            <button class="btn btn-default" type="button" ng-mousedown="mouseDown('in')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()">
-                <i class="glyphicon glyphicon-resize-full" ></i>
-            </button>
+                <div class="input-group">
+                    <span class="input-group-btn" role="">
 
-            <button class="btn btn-default" type="button" ng-mousedown="mouseDown('out')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()">
-                <i class="glyphicon glyphicon-resize-small" ></i>
-            </button>
+                        <button class="btn btn-default" type="button" ng-mousedown="mouseDown('up')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()" >
+                            <i class="glyphicon glyphicon-chevron-up" ></i>
+                        </button>
 
-            <button class="btn btn-default" type="button" ng-click="getInverte()">
-                <i class="glyphicon glyphicon-random"></i>
-            </button>
+                        <button class="btn btn-default" type="button" ng-mousedown="mouseDown('down')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()" >
+                            <i class="glyphicon glyphicon-chevron-down" ></i>
+                        </button>
+                    </span>
+                    <input type="text" class="form-control" ng-model="instaImg.y" ng-change="change('y')">
+                </div>
 
+                
+            </div>
+            <div class="btn-group-vertical" role="group">               
+                    <button class="btn btn-default" type="button" ng-mousedown="mouseDown('in')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()">
+                        <i class="glyphicon glyphicon-resize-full" ></i>
+                    </button>
 
+                    <button class="btn btn-default" type="button" ng-mousedown="mouseDown('out')" ng-mouseup="mouseUp()" ng-mouseleave="mouseUp()">
+                        <i class="glyphicon glyphicon-resize-small" ></i>
+                    </button>
+
+                    
+                </div>
+                
+                <button class="btn btn-default" type="button" ng-click="getInverte()">
+                        <i class="glyphicon glyphicon-random"></i>
+                </button>
+            <div class="btn-group-vertical pull-right" role="group" id="printBt"> 
+                <button class="btn btn-info" type="button" ng-click="saveImg()">
+                    Salvar Foto
+                </button>
+                <button class="btn btn-primary" type="button" ng-click="print()">
+                    Imprimir
+                </button>
+                
+            </div>  
+                    
+            <div class="btn-group-vertical pull-right" role="group"> 
+                
+                <button class="btn btn-info" type="button" ng-click="selectAnotherPic()">
+                    Escolher outra Foto
+                </button>
+                <button class="btn btn-info" type="button" ng-click="saveConf()">
+                    Salvar Configuração
+                </button>
+            </div>
             
-            <button class="btn btn-primary pull-right" type="button" ng-click="print()" id="printBt">
-                Imprimir
-            </button>
-            <button class="btn btn-info pull-right" type="button" ng-click="selectAnotherPic()" id="printBt">
-                Escolher outra Foto
-            </button>
-            <button class="btn btn-info pull-right" type="button" ng-click="saveImg()">
-                Salvar
-            </button>
+            
         </div>
     </div>
     <div id="canvasContainer">
         <canvas id="canvas"></canvas>    
     </div>
     
+</div>
+
+<div ng-hide="state != 'load_error'">
+    <h3>Algo de errado aconteceu! Por favor, cheque sua conexão de internet e se o erro persistir entre em contato com a <b>Squid</b>.</h3>
 </div>

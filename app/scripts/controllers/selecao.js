@@ -8,7 +8,7 @@
  * Controller of the flashvitaApp
  */
 angular.module('flashvitaApp')
-  .controller('SelecaoCtrl', function ($scope, $rootScope, $routeParams, $http, $location, $route) {
+  .controller('SelecaoCtrl', function ($scope, $rootScope, $routeParams, $http, $location, $route, $cookies) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -17,12 +17,11 @@ angular.module('flashvitaApp')
     var id = $routeParams.param,
         imgInsta = new Image(),
         imgMolde = null,
-        wModel = 500,//750,
-        hModel = 750, //1126,
-        instaQuad = 468,//700
+        wModel = 750,
+        hModel = 1126,
+        instaQuad = 636,//701, 636
         mW = 500,
         mH = 750,
-        invert = false,
         btState = '',
         interval = 0;
     
@@ -33,13 +32,16 @@ angular.module('flashvitaApp')
     
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
+    context.imageSmoothingEnabled       = true;
+
 
     $scope.state = 'load';
     function loadData(){
-        $http.get('https://integration.squidit.com.br/v1/monitoring/'+id+'/medias', {headers : {'Authorization': $rootScope.tk}})
+        $http.get('https://integration.squidit.com.br/v1/monitoring/'+id+'/medias', {headers : {'Authorization': $rootScope.tk}, params:{'limit':400}})
         .then(function(s){
             var a = [];
-            for(var i in s.data.data ){
+            for(var i in s.data.data ) {
+                
                 var std = s.data.data[i].images.standard_resolution.url;
                 var tmb = s.data.data[i].images.thumbnail.url;
                 var name = s.data.data[i].caption.from.username;
@@ -52,12 +54,14 @@ angular.module('flashvitaApp')
 
                 var img = { 'img':std, 'thumb':tmb, 'name':name, 'date':d };
                 a.push(img);
+//                console.log(img);
             }
             $scope.imgs = a;
             $scope.state = 'select_photo';
 
         }, function(e){
             console.log('error',e);
+            $scope.state = 'load_error';
         });
     }
     loadData();  
@@ -82,19 +86,25 @@ angular.module('flashvitaApp')
             mH = canvas.height = hModel;
             $scope.moldes.fileVert.file.setAttribute('crossOrigin', 'anonymous');
             imgMolde = $scope.moldes.fileVert.file;
-            $rootScope.instaImg.x = 16;//23;
-            $rootScope.instaImg.y = 82;//124;
         }
         else {
             mW = canvas.width = hModel;//1117;
             mH = canvas.height = wModel;//750;
             $scope.moldes.fileHori.file.setAttribute('crossOrigin', 'anonymous');
             imgMolde = $scope.moldes.fileHori.file;
-            $rootScope.instaImg.x = 82;//124;
-            $rootScope.instaImg.y = 16;//23;
         }
         drawCanvas();
     };
+    
+    $scope.change = function (na){
+        if(na === 'x') {
+            $rootScope.instaImg.x = parseInt($rootScope.instaImg.x);
+        } else if(na === 'y') {
+            $rootScope.instaImg.y = parseInt($rootScope.instaImg.y);
+        } 
+
+        drawCanvas();
+    }
     
     $scope.mouseDown = function(dir){
         btState = dir;
@@ -132,7 +142,7 @@ angular.module('flashvitaApp')
     
     function drawCanvas(){
         context.clearRect(0, 0, canvas.width, canvas.height);
-        if(!invert){
+        if(!$rootScope.instaImg.invert){
             context.drawImage(imgMolde, 0, 0, mW, mH);
             context.drawImage(imgInsta, $rootScope.instaImg.x, $rootScope.instaImg.y, instaQuad, instaQuad);        
         }
@@ -143,7 +153,7 @@ angular.module('flashvitaApp')
     }
     
     $scope.getInverte = function() {
-        invert = !invert;
+        $rootScope.instaImg.invert = !$rootScope.instaImg.invert;
         drawCanvas();
     };
     
@@ -152,6 +162,12 @@ angular.module('flashvitaApp')
          window.open(dt,'canvasImage','left=0,top=0,width='+mW+',height='+mH+',toolbar=0,resizable=0');
 //        window.open(dt, "_blank");
     };
+    
+    $scope.saveConf = function(){
+        $cookies.put('fvPosX', $rootScope.instaImg.x);
+        $cookies.put('fvPosY', $rootScope.instaImg.y);
+        $cookies.put('fvPosInvert', $rootScope.instaImg.invert);
+    }
     
     $scope.print = function() {
         var win = window.open();
