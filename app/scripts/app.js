@@ -26,16 +26,11 @@ angular
     $rootScope.moldes = {'fileVert' : null, 'fileHori' : null};
     $rootScope.instaImg = {'x':0, 'y':0, invert:false};
     
-    console.log($cookies.get('fvPosX'))
-    console.log($cookies.get('fvPosY'))
-    console.log($cookies.get('fvPosInvert'))
-    parseInt
     $rootScope.instaImg.x =($cookies.get('fvPosX'))? parseInt($cookies.get('fvPosX')) : 0;
     $rootScope.instaImg.y =($cookies.get('fvPosY'))? parseInt($cookies.get('fvPosY')) : 0;
     $rootScope.instaImg.invert =($cookies.get('fvPosInvert'))? $cookies.get('fvPosInvert') : false;
-//    console.log($rootScope.instaImg);
   })
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/campanhas', {
         templateUrl: 'views/campanhas.html',
@@ -56,6 +51,7 @@ angular
       .otherwise({
         redirectTo: '/campanhas'
       });
+    $locationProvider.html5Mode(true);
   })
 .directive('ldImg', function () {       
     return {
