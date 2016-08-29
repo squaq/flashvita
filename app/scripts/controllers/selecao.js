@@ -61,6 +61,7 @@ angular.module('flashvitaApp')
 
         }, function(e){
             console.log('error',e);
+            $scope.state = 'load_error';
         });
     }
     loadData();  

@@ -20,6 +20,7 @@ angular.module('flashvitaApp')
 //        redirectUri = 'http://localhost:9000', 
 //        urlApi = 'http://localhost/~squaq/api.php';
     $scope.images = null;
+    $scope.erro = true;
     
     $http.get('https://integration.squidit.com.br/v1/monitoring', {headers : {'Authorization': $rootScope.tk}})
     .then(
@@ -34,6 +35,7 @@ angular.module('flashvitaApp')
         }, 
         function(e){
             console.log('error', e);
+            $scope.erro = false;
         }
     );
     
