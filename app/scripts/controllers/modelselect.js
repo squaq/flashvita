@@ -9,11 +9,10 @@ angular.module('flashvitaApp').controller('ModelSelectCtrl', function ($scope, $
     
     $scope.ok = function () {
         $uibModalInstance.close($scope.selected);
-//        $uibModalInstance.dismiss('cancel');
     };
 
     $scope.cancel = function () {
-        $uibModalInstance.close();
+        $uibModalInstance.dismiss();
     };
     
     $scope.btClickHo = function(){
@@ -46,4 +45,16 @@ angular.module('flashvitaApp').controller('ModelSelectCtrl', function ($scope, $
 
         }
     };
+    
+    $scope.remove = function(name){
+        console.log(name)
+        switch(name){
+            case 'hori':
+                $scope.mHo = $scope.selected.fileHori = null;
+                break;
+            case 'vert':
+               $scope.mVe = $scope.selected.fileVert = null;
+                break;
+        }
+    }
 });
