@@ -40,7 +40,7 @@ angular
         templateUrl: 'views/selecao.html',
         controller: 'SelecaoCtrl'
       })
-      .when('/login', {
+      .when('/', {
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
       })
@@ -49,7 +49,7 @@ angular
         controller: 'SignupCtrl'
       })
       .otherwise({
-        redirectTo: '/campanhas'
+        redirectTo: '/'
       });
     $locationProvider.html5Mode(true);
   })
