@@ -34,18 +34,19 @@
               <span class="icon-bar"></span>
             </button>
 
-            <a class="" href="#/campanhas">
+            <a class="" href="/">
                 <img id="logo" src="images/logo.png" alt="">
             </a>
           </div>
 
-          <div class="collapse navbar-collapse" id="js-navbar-collapse">
+<!--          <div class="collapse navbar-collapse" id="js-navbar-collapse">-->
 
-            <ul class="nav navbar-nav">
-<!--              <li class=""><a href="#/">Campanhas</a></li>-->
+            <ul class="nav navbar-nav navbar-right">
+              <li class="" ng-show="logged"><a href="/logout">Logout</a></li>
+<!--              logged-->
 <!--              <li><a ng-href="#/selecao">Seleção</a></li>-->
             </ul>
-          </div>
+<!--          </div>-->
         </div>
       </div>
     </div>
@@ -102,7 +103,7 @@
         <script src="scripts/controllers/campanhas.js"></script>
         <script src="scripts/controllers/selecao.js"></script>
         <script src="scripts/controllers/login.js"></script>
-        <script src="scripts/controllers/signup.js"></script>
+        <script src="scripts/controllers/logout.js"></script>
         <script src="scripts/controllers/modelselect.js"></script>
         <!-- endbuild -->
 </body>

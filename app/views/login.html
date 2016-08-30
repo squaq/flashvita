@@ -1,4 +1,9 @@
-<button type="button" class="btn btn-default" ng-click="loginClick()" ng-show="!code">Logar com instagram</button>
+<!--<button type="button" class="btn btn-default" ng-click="loginClick()" ng-show="!code">Logar com instagram</button>-->
 
-
-<button type="button" class="btn btn-default" ng-click="limparCache()" ng-show="code">Logout</button>
+<div class="jumbotron">
+    <button type="button" class="btn btn-primary btn-lg" ng-click="loginClick()" ng-show="!loggingin">Logar com instagram</button>
+    
+    <h2 ng-show="loggingin">Logando...</h2>
+    
+</div>
+<!--<button type="button" class="btn btn-default" ng-click="limparCache()" ng-show="code">Logout</button>-->

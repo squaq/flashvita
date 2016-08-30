@@ -29,6 +29,11 @@ angular
     $rootScope.instaImg.x =($cookies.get('fvPosX'))? parseInt($cookies.get('fvPosX')) : 0;
     $rootScope.instaImg.y =($cookies.get('fvPosY'))? parseInt($cookies.get('fvPosY')) : 0;
     $rootScope.instaImg.invert =($cookies.get('fvPosInvert'))? $cookies.get('fvPosInvert') : false;
+    
+    $rootScope.logged = $cookies.get('logged');
+    console.log('$rootScope.logged',$rootScope.logged);
+
+    
   })
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
@@ -44,9 +49,9 @@ angular
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
       })
-      .when('/signup', {
-        templateUrl: 'views/signup.html',
-        controller: 'SignupCtrl'
+      .when('/logout', {
+        templateUrl: 'views/logout.html',
+        controller: 'LogoutCtrl'
       })
       .otherwise({
         redirectTo: '/'
