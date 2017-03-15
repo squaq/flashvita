@@ -30,8 +30,8 @@ angular
     $rootScope.instaImg.y =($cookies.get('fvPosY'))? parseInt($cookies.get('fvPosY')) : 0;
     $rootScope.instaImg.invert =($cookies.get('fvPosInvert'))? $cookies.get('fvPosInvert') : false;
     
-    $rootScope.logged = $cookies.get('logged');
-    console.log('$rootScope.logged',$rootScope.logged);
+//    $rootScope.logged = $cookies.get('logged');
+//    console.log('$rootScope.logged',$rootScope.logged);
 
     
   })
@@ -46,15 +46,17 @@ angular
         controller: 'SelecaoCtrl'
       })
       .when('/', {
-        templateUrl: 'views/login.html',
-        controller: 'LoginCtrl'
+        templateUrl: 'views/campanhas.html',
+        controller: 'CampanhasCtrl'
+//        templateUrl: 'views/login.html',
+//        controller: 'LoginCtrl'
       })
       .when('/logout', {
         templateUrl: 'views/logout.html',
         controller: 'LogoutCtrl'
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/campanhas.html'
       });
     $locationProvider.html5Mode(true);
   })

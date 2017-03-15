@@ -16,9 +16,9 @@ angular.module('flashvitaApp').controller('LoginCtrl', function ($scope, $rootSc
     
     $scope.loggingin = $scope.code = $cookies.get('fvcode');
     $scope.tk = $cookies.get('fvtk');
-    if($cookies.get('logged')) {
+//    if($cookies.get('logged')) {
         $location.path('/campanhas')
-    }
+//    }
     
 //Client ID 0f4e066c0f33485a9d34562bc51e6f09
 //Client Secret 27d26fa6941245a0a9597ed6360184b0

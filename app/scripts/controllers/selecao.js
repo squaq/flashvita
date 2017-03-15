@@ -40,6 +40,7 @@ angular.module('flashvitaApp')
         $http.get('https://integration.squidit.com.br/v1/monitoring/'+id+'/medias', {headers : {'Authorization': $rootScope.tk}, params:{'limit':400}})
         .then(function(s){
             var a = [];
+            console.log(s.data.data)
             for(var i in s.data.data ) {
                 
                 var std = s.data.data[i].images.standard_resolution.url;
@@ -49,12 +50,12 @@ angular.module('flashvitaApp')
                 var d = new Date(s.data.data[i].createdAt);
                 d = d.valueOf();
 
-                std =std.slice(0, std.indexOf('?'));
-                tmb =tmb.slice(0, tmb.indexOf('?'));
+                std =std;//.slice(0, std.indexOf('?'));
+                tmb =tmb;//.slice(0, tmb.indexOf('?'));
 
                 var img = { 'img':std, 'thumb':tmb, 'name':name, 'date':d };
                 a.push(img);
-//                console.log(img);
+                console.log(img);
             }
             $scope.imgs = a;
             $scope.state = 'select_photo';
